@@ -1,6 +1,6 @@
 # Deploy vnext Version and Apply Traffic Shifting
 
-Did you notice that the Fibonacci sequence started with 1? Most would argue that the sequence should actually start with 0. There's a vnext version of the application at the vnext branch in the github project that starts the sequence with 0 instead of 1. This container image has been built and deployed to dockerhub, and tagged as vnext. We'll deploy that as v2 of our app.
+Did you notice that the Fibonacci sequence started with 1? Most would argue that the sequence should actually start with 0. There's a vnext version of the application at the _vnext_ branch in the github project that starts the sequence with 0 instead of 1. This container image has been built and deployed to dockerhub, and tagged as vnext. We'll deploy that as v2 of our app.
 
 ## Deploy vnext
 
@@ -44,7 +44,18 @@ Did you notice that the Fibonacci sequence started with 1? Most would argue that
     fib-knative-rgqjl   fib-knative-rgqjl   1            True
    ```
 
-3. Edit the `fib-service2.yaml` file to change `fib-knative-xxxxx` to your own revision name, which you got from the previous step. In this example, our revision name was `fib-knative-rgqjl`
+3. Edit the `fib-service2.yaml` file to change `fib-knative-xxxxx` to your own revision name, which you got from the previous step. In this example, our revision name was `fib-knative-rgqjl` 
+
+   ```text
+   sed "s/fib-knative-x*/$(kubectl get revisions | grep fib | awk '{print $1}')/g" fib-service2.yaml
+   ```
+
+   Control the output text. If it is correct, apply the substitution witht he following command.
+
+   ```text
+   sed -i "s/fib-knative-x*/$(kubectl get revisions | grep fib | awk '{print $1}')/g" fib-service2.yaml
+   ```
+
 4. Apply your new configuration to the cluster.
 
    ```text

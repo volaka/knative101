@@ -14,23 +14,31 @@ If you already have an IBM Cloud account with the following tools installed, you
 
 ## Installing the IBM Cloud developer tools and plugins
 
+Detailed information can be found in [IBM Cloud Kubernetes Service documentation](https://cloud.ibm.com/docs/containers?topic=containers-cs_cli_install#cs_cli_install_steps).
+
+{% hint style="info" %}
+If you want to use the IBM Cloud console instead, you can run CLI commands directly from your web browser in the [IBM Cloud Shell](https://cloud.ibm.com/docs/containers?topic=containers-cs_cli_install#cloud-shell) or, after your cluster is created, the [Kubernetes Web Terminal](https://cloud.ibm.com/docs/containers?topic=containers-cs_cli_install#cli_web).
+
+In this workshop, we are going to use this option, that's why you can skip this step.
+{% endhint %}
+
 1. Download and install the `ibmcloud` [command line tool.](https://cloud.ibm.com/docs/cli/index.html#overview)
 2. Install the `ks` \(kubernetes-service\) plugin:
 
    ```text
-    ibmcloud plugin install kubernetes-service
+   ibmcloud plugin install kubernetes-service
    ```
 
 3. Install the `cr` \(container-registry\) plugin:
 
    ```text
-    ibmcloud plugin install container-registry
+   ibmcloud plugin install container-registry
    ```
 
 4. Authorize `ibmcloud`:
 
    ```text
-    ibmcloud login
+   ibmcloud login
    ```
 
 ## Install Kubectl

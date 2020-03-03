@@ -10,7 +10,7 @@ If you already have an IBM Cloud account with the following tools installed, you
 
 ## Create an IBM Cloud Account
 
-1. Create an account on [IBM Cloud](https://cloud.ibm.com/registration).
+1. Create an account from [ibm.biz/j2c-workshop](https://ibm.biz/j2c-workshop).
 
 ## Installing the IBM Cloud developer tools and plugins
 
@@ -22,23 +22,23 @@ If you want to use the IBM Cloud console instead, you can run CLI commands direc
 In this workshop, we are going to use this option, that's why you can skip this step.
 {% endhint %}
 
-1. Download and install the `ibmcloud` [command line tool.](https://cloud.ibm.com/docs/cli/index.html#overview)
+1. Download and install the `ibmcloud` [command line tool](https://cloud.ibm.com/docs/cli?topic=cloud-cli-install-ibmcloud-cli#shell_install).
 2. Install the `ks` \(kubernetes-service\) plugin:
 
    ```text
-   ibmcloud plugin install kubernetes-service
+    ibmcloud plugin install kubernetes-service
    ```
 
 3. Install the `cr` \(container-registry\) plugin:
 
    ```text
-   ibmcloud plugin install container-registry
+    ibmcloud plugin install container-registry
    ```
 
 4. Authorize `ibmcloud`:
 
    ```text
-   ibmcloud login
+    ibmcloud login
    ```
 
 ## Install Kubectl
@@ -51,11 +51,23 @@ The Kubernetes command-line tool, kubectl, can be used to deploy and manage appl
 
 The Knative command-line tool, kn provides a set of commands to interact with a Knative installation. Let's install kn as well.
 
-1. Install the kn client by following their [instructions for installation](https://github.com/knative/client/blob/master/docs/README.md#installing-kn). You should be able to download the latest binary executable, and add it to your path, and ensure the file is executable. To ensure the file is executable, run the following command:
+Install the kn client by following their [instructions for installation](https://github.com/knative/client/blob/master/docs/README.md#installing-kn). You should be able to download the latest binary executable, and add it to your path, and ensure the file is executable.
 
-   ```text
-    chmod +x kn
-   ```
+1. Download the latest version from one of the following links that suits for you:
+   * [MacOS](https://storage.googleapis.com/knative-nightly/client/latest/kn-darwin-amd64)
+   * [Linux](https://storage.googleapis.com/knative-nightly/client/latest/kn-linux-amd64)
+   * [Windows](https://storage.googleapis.com/knative-nightly/client/latest/kn-windows-amd64.exe)
+2. Make the downloaded file executable with the following command if your operating system is Linux based or MacOS.
+
+{% tabs %}
+{% tab title="Bash" %}
+```bash
+chmod +x kn
+```
+{% endtab %}
+{% endtabs %}
+
+
 
 Continue on to [exercise 1](exercise-1.md).
 

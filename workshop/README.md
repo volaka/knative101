@@ -1,63 +1,63 @@
 # Introduction
 
+## Knative 101
+
 In this lab, you'll learn about Knative, a new open source collaboration from IBM, Google, Pivotal, Red Hat, Cisco, and others. You'll create a new cluster on IBM Kubernetes Service \(IKS\), install Istio & Knative to that cluster, and then deploy a Node.js fibonacci application to Knative.
 
-## What is Knative
+* Create IBM Cloud Account
+* Create/Claim IBM Kubernetes Service \(IKS\)
+* Install Istio & Knative on IKS
+* Deploy a Node.JS fibonacci application to Knative using various methods
+* **Have fun!**
 
-[Knative](https://github.com/knative/docs) is an open source platform that was developed by IBM, Google, Pivotal, Red Hat, Cisco, and others. The goal is to extend the capabilities of Kubernetes to help you create modern, source-centric containerized, and serverless apps on top of your Kubernetes cluster. The platform is designed to address the needs of developers who today must decide what type of app they want to run in the cloud: 12-factor apps, containers, or functions. Each type of app requires an open source or proprietary solution that is tailored to these apps: Cloud Foundry for 12-factor apps, Kubernetes for containers, and OpenWhisk and others for functions. In the past, developers had to decide what approach they wanted to follow, which led to inflexibility and complexity when different types of apps had to be combined.
+### About this workshop <a id="about-this-workshop"></a>
 
-Knative uses a consistent approach across programming languages and frameworks to abstract the operational burden of building, deploying, and managing workloads in Kubernetes so that developers can focus on what matters most to them: the source code. You can use proven build processes that you are already familiar with, such as Kaniko, Dockerfile, Bazel, and others. By integrating with Istio, Knative ensures that your serverless and containerized workloads can be easily exposed on the internet, monitored, and controlled, and that your data is encrypted during transit.
+The introductory page of the workshop is broken down into the following sections:
 
-### Knative Components
+* ​[Agenda](https://ibm-developer.gitbook.io/workshop-template/#agenda)​
+* ​[Compatibility](https://ibm-developer.gitbook.io/workshop-template/#compatibility)​
+* ​[Technology Used](https://ibm-developer.gitbook.io/workshop-template/#technology-used)​
+* ​[Credits](https://ibm-developer.gitbook.io/workshop-template/#credits)​
 
-Knative comes with two key components, or _primitives_, that help you to deploy and manage your serverless apps in your Kubernetes cluster:
+## Agenda <a id="agenda"></a>
 
-* **Serving:** The `Serving` primitive helps to deploy serverless apps as Knative services and to automatically scale them, even down to zero instances. To expose your serverless and containerized workloads, Knative uses Istio. When you install the managed Knative add-on, the managed Istio add-on is automatically installed as well. By using the traffic management and intelligent routing capabilities of Istio, you can control what traffic is routed to a specific version of your service, which makes it easy for a developer to test and roll out a new app version or do A-B testing.
-* **Eventing:** With the `Eventing` primitive, you can create triggers or event streams that other services can subscribe to. For example, you might want to kick off a new build of your app every time code is pushed to your GitHub master repo. Or you want to run a serverless app only if the temperature drops below freezing point. For example, the `Eventing` primitive can be integrated into your CI/CD pipeline to automate the build and deployment of apps in case a specific event occurs.
+| ​Name | Description |
+| :--- | :--- |
+| [Pre-work 0.1: Registration and Required Tools](prework/exercise-0.md) | IBM Cloud Account registration and intallation of required tools for the workshop |
+| [Pre-work 0.2: IBM Cloud Kubernetes Service​](prework/exercise-1.md) | IBM Cloud Kubernetes Service creation. |
+| [Pre-work 0.3: Install Istio and Knative](prework/exercise-2.md) | Installation of Istio and Knative on IKS |
+| [Concepts 1.1: Knative](knative.md) | What is Knative |
+| [Concepts 1.2: Knative Serving Component](knative-serving-component.md) | Explaining Knative Serving component. |
+| [Workshop 2.1: Deploy First Application to Knative](exercise-3.md) | Explaining workshop |
+| [Workshop 2.2: Deploy using Knative Client](deploy-using-knative-client.md) | Deplyoment using Knative client tool `kn` |
+| [Workshop 2.3: Deploy using YAML and Kubectl](deploy-using-yaml-and-kubectl.md) | Deployment using yaml and Kubernetes client tool `kubectl` |
+| [Workshop 2.4: Deploy vnext version and Apply Traffic Shifting](exercise-5.md) | Deployment of v2 of the application |
 
-We will also explore **Tekton Pipelines**, a project providing kubernetes-style resources for declaring CI/CD pipelines.
+## Compatibility <a id="compatibility"></a>
 
-{% hint style="info" %}
-The Knative open-source project deprecated the **Build** primitive in favor of the Tekton open-source project. The Build primitive provided you with tools to automate the build process for your app from source code to a container image. The Tekton project originated from the Knative project and provides advanced CI/CD features on top of the deprecated Knative Build primitive. For more information, see the [Tekton open-source project](https://tekton.dev).
-{% endhint %}
+This workshop has been tested on the following platforms:
 
-### Knative Personas
+* **osName**: MacOS Catalina 10.15, Linux \(IBM Cloud Shell\)
 
-Two of the key Knative personas are **Developers** and **platform providers**. 
+## Technology Use <a id="technology-used"></a>
 
-* Knative components offer developers Kubernetes-native APIs for deploying serverless-style functions, applications, and containers to an auto-scaling runtime. 
-* Knative components are intended to be integrated into more polished products that cloud service providers or in-house teams in large enterprises can then operate.
+### [Kubernetes](https://kubernetes.io/)
 
-  Any enterprise or cloud provider can adopt Knative components into their own systems and pass the benefits along to their customers.
+Kubernetes \(K8s\) is an open-source system for automating deployment, scaling, and management of containerized applications.
 
-![knative personas](.gitbook/assets/audience.png)
+In this workshop, we will use [IBM Cloud Kubernetes Service.](https://www.ibm.com/cloud/container-service/)
 
-## What will we do?
+### [Knative](https://github.com/knative/docs)
 
-The Knative application you'll create is a **fibonacci sequence app**. When provided with the number _n_, it will return the first n numbers of the fibonacci sequence: 1, 1, 2, 3.... 
+Knative is an open source platform that was developed by IBM, Google, Pivotal, Red Hat, Cisco, and others. The goal is to extend the capabilities of Kubernetes to help you create modern, source-centric containerized, and serverless apps on top of your Kubernetes cluster
 
-You'll also deploy a _vnext_ of the application, which starts the fibonacci sequence with 0 instead of 1: 0, 1, 1, 2, 3.... The application will be given a domain, which you'll be able to curl to get the fibonacci results.
+### [Istio](https://istio.io)
 
-### IBM Cloud Kubernetes Service - Knative Add-On
+Cloud platforms provide a wealth of benefits for the organizations that use them. However, there’s no denying that adopting the cloud can put strains on DevOps teams. Developers must use microservices to architect for portability, meanwhile operators are managing extremely large hybrid and multi-cloud deployments. Istio lets you connect, secure, control, and observe services.
 
-Managed Knative on IBM Cloud Kubernetes Service is a [managed add-on](https://cloud.ibm.com/docs/containers?topic=containers-managed-addons#managed-addons) that integrates Knative and Istio directly with your Kubernetes cluster. The Knative and Istio versions in the add-on are tested by IBM and supported for the use in IBM Cloud Kubernetes Service. For more information about managed add-ons, see [Adding services by using managed add-ons](https://cloud.ibm.com/docs/containers?topic=containers-managed-addons#managed-addons).
+At a high level, Istio helps reduce the complexity of these deployments, and eases the strain on your development teams. It is a completely open source service mesh that layers transparently onto existing distributed applications. It is also a platform, including APIs that let it integrate into any logging platform, or telemetry or policy system. Istio’s diverse feature set lets you successfully, and efficiently, run a distributed microservice architecture, and provides a uniform way to secure, connect, and monitor microservices.
 
-**Are there any limitations?**
+## Credits <a id="credits"></a>
 
-* The managed Knative add-on version 0.12.1 requires and installs Istio 1.4 with the add-on. You cannot use the Knative add-on with Istio 1.3. Before you install Knative, you can check your Istio version by running `ibmcloud ks cluster addons -c <cluster_name_or_ID>`. If you have Istio 1.3 and want to use the managed Knative add-on, you must [uninstall Istio 1.3](https://cloud.ibm.com/docs/containers?topic=containers-istio#istio_uninstall).
-* The Knative add-on can be enabled in clusters that run Kubernetes version 1.16 or later only.
-
-## What will we learn?
-
-You'll learn to:
-
-* deploy applications using kubectl with a configuration yaml file, 
-* deploy applications using the kn CLI tool,
-* be able to see your application scale up when in use,  
-* scale back down to zero pods when it's not being used,
-* work with revisions and routes, sending some percentage of your traffic to a new revision.
-
-![diagram of the app created in this lab](.gitbook/assets/knativeappdiagram.png)
-
-Get started with the [workshop](exercise-0.md).
+* [https://github.com/IBM/knative101](https://github.com/IBM/knative101)
 
